@@ -18,7 +18,7 @@ namespace RhythmYardstick
 
         public const float YardstickTextSize = 20;
 
-        public const float YardstickThickness = 8f;
+        public const float YardstickThickness = 5f;
 
         public const float HorizontalIndentation = CanvasWidth * 0.02f;
 
@@ -55,8 +55,9 @@ namespace RhythmYardstick
 
                 if (beatNumber == Configuration.BeatCount)
                 {
+                    canvas.StrokeColor = new Color(0, 255, 0);
                     canvas.DrawLine(beatX + beatWidth, Top, beatX + beatWidth, Bottom);
-                    canvas.DrawLine(HorizontalIndentation, Bottom, YardStickWidth, Bottom);
+                    canvas.DrawLine(HorizontalIndentation, Bottom, HorizontalIndentation + YardStickWidth, Bottom);
                 }
 
                 canvas.StrokeColor = SubdivisionColor;
