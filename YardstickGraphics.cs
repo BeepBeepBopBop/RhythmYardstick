@@ -12,9 +12,13 @@ namespace RhythmYardstick
 
         public const float CanvasHeight = 500;
 
-        public const float YardstickHeight = CanvasHeight - (VerticalIndentation * 2);
+        public const float YardstickHeight = CanvasHeight - (VerticalIndentation * 2) - (YardstickTextSize * 1.5f) - YardstickThickness;
 
         public const float YardStickWidth = CanvasWidth - (HorizontalIndentation * 2);
+
+        public const float YardstickTextSize = 20;
+
+        public const float YardstickThickness = 8f;
 
         public const float HorizontalIndentation = CanvasWidth * 0.02f;
 
@@ -26,11 +30,9 @@ namespace RhythmYardstick
 
         public static Color NoteToPlayColor = Color.FromRgb(128, 0, 128);
 
-        public static float YardstickThickness = 6f;
+        public static float Top = VerticalIndentation + YardstickTextSize;
 
-        public static float Top = VerticalIndentation;
-
-        public static float Bottom = Top + YardstickHeight;
+        public static float Bottom = Top + YardstickHeight + YardstickThickness;
 
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -40,16 +42,16 @@ namespace RhythmYardstick
 
             canvas.StrokeSize = YardstickThickness;
             canvas.FontColor = YardstickColor;
-            canvas.FontSize = 20;
+            canvas.FontSize = YardstickTextSize;
             canvas.Font = Microsoft.Maui.Graphics.Font.DefaultBold;
-
+            
             for (int beatNumber = 1; beatNumber <= Configuration.BeatCount; beatNumber++)
             {
                 float beatX = beatWidth * (beatNumber - 1) + HorizontalIndentation;
 
                 canvas.StrokeColor = YardstickColor;
                 canvas.DrawLine(beatX, Top, beatX, Bottom);
-                canvas.DrawString(beatNumber.ToString(), beatX - YardstickThickness, Top - (Top * VerticalIndentation / 2), HorizontalAlignment.Left);
+                canvas.DrawString(beatNumber.ToString(), beatX - YardstickThickness, YardstickTextSize, HorizontalAlignment.Left);
 
                 if (beatNumber == Configuration.BeatCount)
                 {
