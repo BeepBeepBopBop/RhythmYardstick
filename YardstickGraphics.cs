@@ -34,6 +34,7 @@ namespace RhythmYardstick
 
         public static float Bottom = Top + YardstickHeight + YardstickThickness;
 
+        public static readonly Microsoft.Maui.Graphics.Font YardstickFont = Microsoft.Maui.Graphics.Font.DefaultBold;
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
@@ -53,21 +54,18 @@ namespace RhythmYardstick
             canvas.StrokeSize = YardstickThickness;
             canvas.FontColor = YardstickColor;
             canvas.FontSize = YardstickTextSize;
-            canvas.Font = Microsoft.Maui.Graphics.Font.DefaultBold;
+            canvas.Font = YardstickFont;
 
             for (int beatNumber = 1; beatNumber <= Configuration.BeatCount; beatNumber++)
             {
                 float beatX = beatWidth * (beatNumber - 1) + HorizontalIndentation;
 
-                canvas.StrokeColor = YardstickColor;
-                canvas.DrawLine(beatX, Top, beatX, Bottom);
-                canvas.DrawString(beatNumber.ToString(), beatX - YardstickThickness, YardstickTextSize, HorizontalAlignment.Left);
+                DrawBeatMark(canvas, beatNumber.ToString(), beatX);
 
                 if (beatNumber == Configuration.BeatCount)
                 {
-                    canvas.DrawLine(beatX + beatWidth, Top, beatX + beatWidth, Bottom);
                     canvas.DrawLine(HorizontalIndentation, Bottom, HorizontalIndentation + YardStickWidth, Bottom);
-                    canvas.DrawString("(1)", beatX + beatWidth - YardstickThickness, YardstickTextSize, HorizontalAlignment.Left);
+                    DrawBeatMark(canvas, "(1)", beatX + beatWidth);
                 }
 
                 canvas.StrokeColor = SubdivisionColor;
@@ -86,6 +84,16 @@ namespace RhythmYardstick
                 }
             }
         }
+
+
+        private static void DrawBeatMark(ICanvas canvas, string text, float beatX)
+        {
+            var textSize = canvas.GetStringSize(text, YardstickFont, YardstickTextSize);
+            canvas.StrokeColor = YardstickColor;
+            canvas.DrawString(text, beatX - (textSize.Width / 2) - (YardstickThickness / 2), YardstickTextSize, HorizontalAlignment.Left);
+            canvas.DrawLine(beatX, Top, beatX, Bottom);
+        }
+
     }
 
     public class RhythmGraphics : IDrawable
