@@ -27,11 +27,6 @@ public partial class MainPage : ContentPage
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
         StartNewExercise();
-
-        YardstickGraphics yardstickGraphics = new YardstickGraphics();
-        GraphicsView graphicsView = new GraphicsView() { HeightRequest = 500, WidthRequest = 700 };
-        graphicsView.Drawable = yardstickGraphics;
-        layout.Children.Add(graphicsView);
         _isStarted = true;
     }
 
@@ -64,24 +59,25 @@ public partial class MainPage : ContentPage
         GraphicsView noteToPlayGraphics = new GraphicsView
         {
             Drawable = new RhythmGraphics(NoteToPlay),
-            WidthRequest = YardstickGraphics.CanvasWidth,
-            HeightRequest = YardstickGraphics.CanvasHeight * YardstickGraphics.VerticalIndentation
+            WidthRequest = 600,
+            HeightRequest = 100
         };
 
         List<GraphicsView> elementsToRemove = new List<GraphicsView>();
 
-        //foreach (var child in layout.Children)
-        //{
-        //    if (child is GraphicsView childGraphicsView && noteToPlayGraphics.Drawable is YardstickGraphics.RhythmGraphics)
-        //    {
-        //        elementsToRemove.Add(childGraphicsView);
-        //    }
-        //}
+        foreach (var child in layout.Children)
+        {
+            if (child is GraphicsView childGraphicsView && childGraphicsView.Drawable is RhythmGraphics)
+            {
+                elementsToRemove.Add(childGraphicsView);
+            }
+        }
 
-        //foreach (var element in elementsToRemove)
-        //{
-        //    layout.Children.Remove(element);
-        //}
+        foreach (var element in elementsToRemove)
+        {
+            layout.Remove(element);
+            //layout.Children.Remove(element);
+        }
 
         layout.Children.Add(noteToPlayGraphics);
     }

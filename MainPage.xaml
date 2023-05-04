@@ -10,8 +10,8 @@
     </ContentPage.Resources>
 
     <VerticalStackLayout x:Name="layout">
-        <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start" HeightRequest="400" WidthRequest="600" />
-        <GraphicsView Drawable="{StaticResource rhythmDrawable}" HorizontalOptions="Start" HeightRequest="100" WidthRequest="600" />
         <Button Text="Start" Clicked="OnStartButtonClicked" HorizontalOptions="Start"/>
+        <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start" HeightRequest="400" WidthRequest="600" />
+        <!--<GraphicsView Drawable="{StaticResource rhythmDrawable}" HorizontalOptions="Start" HeightRequest="100" WidthRequest="600" />-->
     </VerticalStackLayout>
 </ContentPage>
