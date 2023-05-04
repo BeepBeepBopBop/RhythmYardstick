@@ -98,13 +98,14 @@ namespace RhythmYardstick
 
     public class RhythmGraphics : IDrawable
     {
+        public const float RhythmThickness = 2.5f;
+
         public Tuple<int, int> NoteToPlay { get; set; }
 
         public RhythmGraphics()
         {
             NoteToPlay = new Tuple<int, int>(1, 0);
         }
-
 
         public RhythmGraphics(Tuple<int, int> noteToPlay)
         {
@@ -118,21 +119,21 @@ namespace RhythmYardstick
             int scale = (int)Math.Pow(2, Configuration.SubdivisionCount);
             float x = beatX + NoteToPlay.Item2 * (beatWidth / scale);
 
-            float y1 = 0;
-            float y2 = 50;
-
+            float arrowHeight = 80;
+            float arrowTipSize = arrowHeight / 3.5f;
+            float y1 = RhythmThickness * 2;
+            float y2 = y1 + arrowHeight;
             canvas.StrokeColor = YardstickGraphics.NoteToPlayColor;
-            canvas.StrokeSize = YardstickGraphics.YardstickThickness;
-            canvas.StrokeLineCap = LineCap.Square;
+            canvas.StrokeSize = RhythmThickness;
+            canvas.StrokeLineCap = LineCap.Round;
+            canvas.StrokeLineJoin = LineJoin.Round;
             canvas.DrawLine(x, y1, x, y2);
 
-            canvas.StrokeSize = 2;
-            canvas.StrokeLineCap = LineCap.Round;
 
-            PathF path = new PathF(0, 10);
+            PathF path = new PathF(beatX - (arrowTipSize / 2), arrowTipSize + RhythmThickness);
 
-            path.LineTo(5, 0);
-            path.LineTo(10, 10);
+            path.LineTo(beatX, RhythmThickness);
+            path.LineTo(beatX + (arrowTipSize / 2), arrowTipSize + RhythmThickness);
             canvas.DrawPath(path);
         }
     }
