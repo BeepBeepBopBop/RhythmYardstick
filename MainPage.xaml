@@ -3,20 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawable="clr-namespace:RhythmYardstick"
              x:Class="RhythmYardstick.MainPage">
-    
+
     <ContentPage.Resources>
         <drawable:RhythmGraphics x:Key="rhythmDrawable" />
         <drawable:YardstickGraphics x:Key="yardstickDrawable" />
     </ContentPage.Resources>
-    
-    <VerticalStackLayout x:Name="layout">
-        <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start"
-                      HeightRequest="500"
-                      WidthRequest="800" />
-        <GraphicsView Drawable="{StaticResource rhythmDrawable}" HorizontalOptions="Start"
-                      HeightRequest="100"
-                      WidthRequest="800" />
-        <Button Text="Start" Clicked="OnStartButtonClicked" HorizontalOptions="Center"/>
 
+    <VerticalStackLayout x:Name="layout">
+        <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start" HeightRequest="400" WidthRequest="600" />
+        <GraphicsView Drawable="{StaticResource rhythmDrawable}" HorizontalOptions="Start" HeightRequest="100" WidthRequest="600" />
+        <Button Text="Start" Clicked="OnStartButtonClicked" HorizontalOptions="Start"/>
     </VerticalStackLayout>
 </ContentPage>

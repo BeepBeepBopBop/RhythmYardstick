@@ -8,11 +8,11 @@ namespace RhythmYardstick
 {
     internal class YardstickGraphics : IDrawable
     {
-        public const float CanvasWidth = 700;
+        public const float CanvasWidth = 600;
 
-        public const float CanvasHeight = 500;
+        public const float CanvasHeight = 400;
 
-        public const float YardstickHeight = CanvasHeight - (VerticalIndentation * 2) - (YardstickTextSize * 1.5f) - YardstickThickness;
+        public const float YardstickHeight = CanvasHeight - (YardstickTextSize * 1.5f) - YardstickThickness;
 
         public const float YardStickWidth = CanvasWidth - (HorizontalIndentation * 2);
 
