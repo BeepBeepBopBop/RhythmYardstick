@@ -37,14 +37,24 @@ namespace RhythmYardstick
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+#if BETA
+            canvas.StrokeSize = 10F;
+            //canvas.StrokeLineJoin = LineJoin.Round;
+            canvas.StrokeLineCap = LineCap.Square;
+            canvas.StrokeColor = YardstickColor;
+            canvas.DrawLine(100, 100, 200, 100);
+            canvas.DrawLine(100, 100, 100, 200);
+#endif
+
             float beatmMarkHeight = YardstickHeight;
             float beatWidth = YardStickWidth / Configuration.BeatCount;
 
+            canvas.StrokeLineCap = LineCap.Square;
             canvas.StrokeSize = YardstickThickness;
             canvas.FontColor = YardstickColor;
             canvas.FontSize = YardstickTextSize;
             canvas.Font = Microsoft.Maui.Graphics.Font.DefaultBold;
-            
+
             for (int beatNumber = 1; beatNumber <= Configuration.BeatCount; beatNumber++)
             {
                 float beatX = beatWidth * (beatNumber - 1) + HorizontalIndentation;
@@ -55,9 +65,9 @@ namespace RhythmYardstick
 
                 if (beatNumber == Configuration.BeatCount)
                 {
-                    canvas.StrokeColor = new Color(0, 255, 0);
                     canvas.DrawLine(beatX + beatWidth, Top, beatX + beatWidth, Bottom);
                     canvas.DrawLine(HorizontalIndentation, Bottom, HorizontalIndentation + YardStickWidth, Bottom);
+                    canvas.DrawString("(1)", beatX + beatWidth - YardstickThickness, YardstickTextSize, HorizontalAlignment.Left);
                 }
 
                 canvas.StrokeColor = SubdivisionColor;
@@ -69,7 +79,9 @@ namespace RhythmYardstick
                     for (int subdivisionMarkNumber = 1; subdivisionMarkNumber <= scale - 1; subdivisionMarkNumber++)
                     {
                         float x = beatX + subdivisionMarkNumber * (beatWidth / scale);
-                        canvas.DrawLine(x, Bottom, x, Bottom - beatmMarkHeight / scale);
+                        float y = Bottom - YardstickThickness;
+
+                        canvas.DrawLine(x, y, x, y - beatmMarkHeight / scale);
                     }
                 }
             }
