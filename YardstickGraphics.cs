@@ -114,7 +114,7 @@ namespace RhythmYardstick
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float beatWidth = YardstickGraphics.YardStickWidth / Configuration.RoundCount;
+            float beatWidth = YardstickGraphics.YardStickWidth / Configuration.BeatCount;
             float beatX = (NoteToPlay.Item1 - 1) * beatWidth + YardstickGraphics.HorizontalIndentation;
             int scale = (int)Math.Pow(2, Configuration.SubdivisionCount);
             float x = beatX + NoteToPlay.Item2 * (beatWidth / scale);
@@ -130,10 +130,10 @@ namespace RhythmYardstick
             canvas.DrawLine(x, y1, x, y2);
 
 
-            PathF path = new PathF(beatX - (arrowTipSize / 2), arrowTipSize + RhythmThickness);
+            PathF path = new PathF(x - (arrowTipSize / 2), arrowTipSize + RhythmThickness);
 
-            path.LineTo(beatX, RhythmThickness);
-            path.LineTo(beatX + (arrowTipSize / 2), arrowTipSize + RhythmThickness);
+            path.LineTo(x, RhythmThickness);
+            path.LineTo(x + (arrowTipSize / 2), arrowTipSize + RhythmThickness);
             canvas.DrawPath(path);
         }
     }

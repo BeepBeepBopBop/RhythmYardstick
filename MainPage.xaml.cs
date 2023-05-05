@@ -55,12 +55,28 @@ public partial class MainPage : ContentPage
     private void StartNewExercise()
     {
         NoteToPlay = GetNoteToPlay();
+        Application.Current.Dispatcher.Dispatch(DisplayRhythm);
+    }
 
+    private Tuple<int, int> GetNoteToPlay()
+    {
+        int beatNumber;
+        int subDivisionNumber;
+
+        beatNumber = _randomBeat.Next(1, Configuration.BeatCount);
+        subDivisionNumber = _randomSubdivision.Next(0, Configuration.SubdivisionCount * Configuration.SubdivisionCount - 1);
+
+        return new Tuple<int, int>(beatNumber, subDivisionNumber);
+    }
+
+    private void DisplayRhythm()
+    {
         GraphicsView noteToPlayGraphics = new GraphicsView
         {
             Drawable = new RhythmGraphics(NoteToPlay),
             WidthRequest = 600,
-            HeightRequest = 100
+            HeightRequest = 100,
+            HorizontalOptions = LayoutOptions.Start,
         };
 
         List<GraphicsView> elementsToRemove = new List<GraphicsView>();
@@ -76,21 +92,9 @@ public partial class MainPage : ContentPage
         foreach (var element in elementsToRemove)
         {
             layout.Remove(element);
-            //layout.Children.Remove(element);
         }
 
         layout.Children.Add(noteToPlayGraphics);
-    }
-
-    private Tuple<int, int> GetNoteToPlay()
-    {
-        int beatNumber;
-        int subDivisionNumber;
-
-        beatNumber = _randomBeat.Next(1, Configuration.BeatCount);
-        subDivisionNumber = _randomSubdivision.Next(1, Configuration.SubdivisionCount * Configuration.SubdivisionCount);
-
-        return new Tuple<int, int>(beatNumber, subDivisionNumber);
     }
 }
 
