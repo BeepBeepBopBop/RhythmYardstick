@@ -137,4 +137,31 @@ namespace RhythmYardstick
             canvas.DrawPath(path);
         }
     }
+
+    public class BeatIndexGraphics : IDrawable
+    {
+        public int BeatNumber { get; }
+
+        public BeatIndexGraphics(int beatNumber)
+        {
+            BeatNumber = beatNumber;
+        }
+
+        public BeatIndexGraphics()
+        {
+            BeatNumber = 1;
+        }
+
+        public void Draw(ICanvas canvas, RectF dirtyRect)
+        {
+            float beatWidth = YardstickGraphics.YardStickWidth / Configuration.BeatCount;
+            float beatX = (BeatNumber - 1) * beatWidth + YardstickGraphics.HorizontalIndentation;
+            float radius = RhythmGraphics.RhythmThickness * 3;
+
+            canvas.StrokeColor = YardstickGraphics.NoteToPlayColor;
+            canvas.StrokeSize = RhythmGraphics.RhythmThickness;
+
+            canvas.DrawCircle(beatX, radius * 2, radius);
+        }
+    }
 }

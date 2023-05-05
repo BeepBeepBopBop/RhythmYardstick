@@ -1,4 +1,6 @@
-﻿namespace RhythmYardstick;
+﻿using Plugin.Maui.Audio;
+
+namespace RhythmYardstick;
 
 public partial class MainPage : ContentPage
 {
@@ -31,10 +33,14 @@ public partial class MainPage : ContentPage
     }
 
 
-    private void TimerCallback(object state)
+    private async void TimerCallback(object state)
     {
         if (_isStarted)
         {
+            var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
+
+            audioPlayer.Play();
+
             _currentRoundBeatCount++;
             _elapsedTime = _elapsedTime.Add(TimeSpan.FromSeconds(1));
 
