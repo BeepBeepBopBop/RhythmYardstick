@@ -31,10 +31,6 @@ public partial class MainPage : ContentPage
         _isStarted = true;
     }
 
-    private async void OnSettingsButtonClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(SettingsPage));
-    }
 
     private async void TimerCallback(object state)
     {
