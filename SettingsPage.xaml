@@ -2,21 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawable="clr-namespace:RhythmYardstick"
-             x:Class="RhythmYardstick.SettingsPage">
+             x:Class="RhythmYardstick.SettingsPage"
+             x:DataType="drawable:SettingsViewModel">
 
     <ScrollView Grid.Row="1">
         <VerticalStackLayout Spacing="8">
             <HorizontalStackLayout>
                 <Label Text="BPM" HorizontalOptions="Start"/>
-                <Slider Minimum="30" Maximum="200" ValueChanged="OnBpmSliderValueChanged" />
+                <Slider Minimum="30" Maximum="200" Value="{Binding BPM}" ValueChanged="OnBpmSliderValueChanged" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Label Text="Subdivisions" HorizontalOptions="Start"/>
-                <Slider  Minimum ="1" Maximum="4" ValueChanged="OnSubdivisionsSliderValueChanged" />
+                <Slider  Minimum ="1" Maximum="4" Value="{Binding SubdivisionCount}" ValueChanged="OnSubdivisionsSliderValueChanged" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Label Text="Number of beats" HorizontalOptions="Start"/>
-                <Slider Minimum="2" Maximum="6" ValueChanged="OnBeatCountSliderValueChanged" />
+                <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount}" ValueChanged="OnBeatCountSliderValueChanged" />
             </HorizontalStackLayout>
 
         </VerticalStackLayout>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RhythmYardstick
 {
-    internal class SettingsViewModel
+    public partial class SettingsViewModel : ObservableObject
     {
         public int SubdivisionCount
         {
