@@ -1,3 +1,6 @@
 bin/
 obj/
 *.user
+*.vsidx
+*.lock
+.vs/RhythmYardstick/v17/.suo
