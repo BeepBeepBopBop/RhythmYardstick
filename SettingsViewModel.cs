@@ -14,11 +14,12 @@ namespace RhythmYardstick
         {
             get
             {
-                return Preferences.Get("SubdivisionCount", Configuration.SubdivisionCount);
+                var value = Preferences.Get("SubdivisionCount", Configuration.SubdivisionCount);
+                return value;
             }
             set
             {
-                Preferences.Set("SubdivisionCount,", Configuration.SubdivisionCount);
+                Preferences.Set("SubdivisionCount,", value);
             }
         }
 
@@ -26,11 +27,12 @@ namespace RhythmYardstick
         {
             get
             {
-                return Preferences.Get("BeatCount", Configuration.BeatCount);
+                var value = Preferences.Get("BeatCount", Configuration.BeatCount);
+                return value;
             }
             set
             {
-                Preferences.Set("BeatCount,", Configuration.BeatCount);
+                Preferences.Set("BeatCount,", value);
             }
         }
 
@@ -42,7 +44,7 @@ namespace RhythmYardstick
             }
             set
             {
-                Preferences.Set("BPM,", Configuration.BPM);
+                Preferences.Set("BPM,", value);
             }
         }
     }
