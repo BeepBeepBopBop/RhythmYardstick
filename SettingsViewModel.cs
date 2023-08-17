@@ -10,41 +10,40 @@ namespace RhythmYardstick
 {
     public partial class SettingsViewModel : ObservableObject
     {
+        public SettingsViewModel()
+        {
+            BPM = Configuration.BPM;
+            SubdivisionCount = Configuration.SubdivisionCount;
+            BeatCount = Configuration.BeatCount;
+        }
+
         public int SubdivisionCount
         {
-            get
-            {
-                var value = Preferences.Get("SubdivisionCount", Configuration.SubdivisionCount);
-                return value;
-            }
+            get => Configuration.SubdivisionCount;
             set
             {
-                Preferences.Set("SubdivisionCount,", value);
+                Configuration.SubdivisionCount = value;
+                OnPropertyChanged();
             }
         }
 
         public int BeatCount
         {
-            get
-            {
-                var value = Preferences.Get("BeatCount", Configuration.BeatCount);
-                return value;
-            }
+            get => Configuration.BeatCount;
             set
             {
-                Preferences.Set("BeatCount,", value);
+                Configuration.BeatCount = value;
+                OnPropertyChanged();
             }
         }
 
         public int BPM
         {
-            get
-            {
-                return Preferences.Get("BPM", Configuration.BPM);
-            }
+            get => Configuration.BPM;
             set
             {
-                Preferences.Set("BPM,", value);
+                Configuration.BPM = value;
+                OnPropertyChanged();
             }
         }
     }

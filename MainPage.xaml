@@ -12,7 +12,7 @@
 
     <VerticalStackLayout x:Name="layout">
         <Button HorizontalOptions="Start" Text="Settings" Clicked="OnSettingsButtonClicked"/>
-        <GraphicsView Drawable="{StaticResource beatIndexDrawable}" HorizontalOptions="Start" HeightRequest="50" WidthRequest="600" />
+        <!--<GraphicsView Drawable="{StaticResource beatIndexDrawable}" HorizontalOptions="Start" HeightRequest="50" WidthRequest="600" />-->
         <HorizontalStackLayout>
             <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start" HeightRequest="400" WidthRequest="650" />
             <Button Text="Start" Clicked="OnStartButtonClicked" HorizontalOptions="End"/>

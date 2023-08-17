@@ -6,31 +6,16 @@
              x:DataType="drawable:SettingsViewModel">
 
     <ScrollView Grid.Row="1">
-        <VerticalStackLayout Spacing="8">
-
-            <Label x:Name="rotatingLabel"
-               Text="ROTATING TEXT"
-               FontSize="18"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
-            <Slider Maximum="360" ValueChanged="OnSliderValueChanged" />
-            <Slider Maximum="360" ValueChanged="OnSliderValueChanged" />
-            <Label x:Name="displayLabel"
-               Text="(uninitialized)"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
+        <VerticalStackLayout Spacing="0">
 
             <Label Text="{Binding BPM, StringFormat='BPM: {0}'}" />
-            <Slider  x:Name="sliderBPM"  Minimum="30" Maximum="200" VerticalOptions="End" Value="{Binding BPM, Mode=TwoWay, FallbackValue=50}" ValueChanged="OnBpmSliderValueChanged" />
+            <Slider  x:Name="sliderBPM"  Minimum="30" Maximum="200" Value="{Binding BPM, Mode=TwoWay}" Margin="20"/>
 
-            <HorizontalStackLayout>
-                <Label Text="Subdivisions" HorizontalOptions="Start"/>
-                <Slider  Minimum ="1" Maximum="4" Value="{Binding SubdivisionCount}" ValueChanged="OnSubdivisionsSliderValueChanged" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout>
-                <Label Text="Number of beats" HorizontalOptions="Start"/>
-                <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount}" ValueChanged="OnBeatCountSliderValueChanged" />
-            </HorizontalStackLayout>
+            <Label Text="{Binding SubdivisionCount, StringFormat='Subdivisions: {0}'}" />
+            <Slider  Minimum ="1" Maximum="4" Value="{Binding SubdivisionCount,Mode=TwoWay}"  />
+
+            <Label Text="{Binding BeatCount, StringFormat='Number of beats: {0}'}" />
+            <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount,Mode=TwoWay}" />
 
         </VerticalStackLayout>
     </ScrollView>

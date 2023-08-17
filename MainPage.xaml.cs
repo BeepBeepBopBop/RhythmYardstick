@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Audio;
+﻿using Microsoft.Maui.Platform;
+using Plugin.Maui.Audio;
 using System.Runtime.CompilerServices;
 
 namespace RhythmYardstick;
@@ -27,12 +28,14 @@ public partial class MainPage : ContentPage
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
         _currentBeatNumber = 0;
-        _timer = new Timer(TimerCallback, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        int bpmMiliseconds = 60000 / Configuration.BPM;
+        _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
         _isStarted = true;
     }
 
     private async void OnSettingsButtonClicked(object sender, EventArgs e)
     {
+        Application.Current.Dispatcher.Dispatch(StopExercise);
         await Shell.Current.GoToAsync(nameof(SettingsPage));
     }
 
@@ -40,8 +43,8 @@ public partial class MainPage : ContentPage
     {
         if (_isStarted)
         {
-            var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
-            audioPlayer.Play();
+            //var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
+            //audioPlayer.Play();
 
             _currentBeatNumber++;
 
@@ -54,7 +57,7 @@ public partial class MainPage : ContentPage
             if (_elapsedRounds == Configuration.RoundCount)
             {
                 _elapsedRounds = 0;
-                StartNewExercise();
+                Application.Current.Dispatcher.Dispatch(StopExercise);
             }
 
             Application.Current.Dispatcher.Dispatch(DisplayBeat);
@@ -65,6 +68,17 @@ public partial class MainPage : ContentPage
     {
         NoteToPlay = GetNoteToPlay();
         Application.Current.Dispatcher.Dispatch(DisplayNoteToPlay);
+    }
+
+    private void StopExercise()
+    {
+        if (_isStarted)
+        {
+            RemoveGraphicElementFromView(typeof(RhythmGraphics));
+            RemoveGraphicElementFromView(typeof(BeatIndexGraphics));
+            _isStarted = false;
+            _timer = null;
+        }
     }
 
     private Tuple<int, int> GetNoteToPlay()
@@ -78,8 +92,11 @@ public partial class MainPage : ContentPage
         return new Tuple<int, int>(beatNumber, subDivisionNumber);
     }
 
+    bool lastIsDisplayBeat = true;
+
     private void DisplayBeat()
     {
+        lastIsDisplayBeat = true;
         GraphicsView beatIndexGraphics = new GraphicsView()
         {
             Drawable = new BeatIndexGraphics(_currentBeatNumber),
@@ -89,11 +106,12 @@ public partial class MainPage : ContentPage
         };
 
         RemoveGraphicElementFromView(typeof(BeatIndexGraphics));
-        layout.Children.Insert(0, beatIndexGraphics);
+        layout.Children.Insert(1, beatIndexGraphics);
     }
 
     private void DisplayNoteToPlay()
     {
+        lastIsDisplayBeat = false;
         GraphicsView noteToPlayGraphics = new GraphicsView
         {
             Drawable = new RhythmGraphics(NoteToPlay),
