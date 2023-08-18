@@ -4,3 +4,4 @@ obj/
 *.vsidx
 *.lock
 .vs/RhythmYardstick/v17/.suo
+*.v2

@@ -22,15 +22,18 @@ public partial class MainPage : ContentPage
 
     public MainPage()
     {
+        BindingContext = new MainViewModel();
         InitializeComponent();
     }
 
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
         _currentBeatNumber = 0;
+        ((MainViewModel)BindingContext).BeatIndexVisible = true;
         int bpmMiliseconds = 60000 / Configuration.BPM;
         _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
         _isStarted = true;
+        Application.Current.Dispatcher.Dispatch(StartNewExercise);
     }
 
     private async void OnSettingsButtonClicked(object sender, EventArgs e)
@@ -67,15 +70,16 @@ public partial class MainPage : ContentPage
     private void StartNewExercise()
     {
         NoteToPlay = GetNoteToPlay();
-        Application.Current.Dispatcher.Dispatch(DisplayNoteToPlay);
+        ((MainViewModel)BindingContext).NoteToPlayDrawable = new RhythmGraphics(NoteToPlay);
+        ((MainViewModel)BindingContext).NoteToPlayVisible = true;
     }
 
     private void StopExercise()
     {
         if (_isStarted)
         {
-            RemoveGraphicElementFromView(typeof(RhythmGraphics));
-            RemoveGraphicElementFromView(typeof(BeatIndexGraphics));
+            ((MainViewModel)BindingContext).NoteToPlayVisible = false;
+            ((MainViewModel)BindingContext).BeatIndexVisible = false;
             _isStarted = false;
             _timer = null;
         }
@@ -92,54 +96,13 @@ public partial class MainPage : ContentPage
         return new Tuple<int, int>(beatNumber, subDivisionNumber);
     }
 
-    bool lastIsDisplayBeat = true;
-
     private void DisplayBeat()
     {
-        lastIsDisplayBeat = true;
-        GraphicsView beatIndexGraphics = new GraphicsView()
-        {
-            Drawable = new BeatIndexGraphics(_currentBeatNumber),
-            WidthRequest = 600,
-            HeightRequest = 50,
-            HorizontalOptions = LayoutOptions.Start
-        };
-
-        RemoveGraphicElementFromView(typeof(BeatIndexGraphics));
-        layout.Children.Insert(1, beatIndexGraphics);
+        ((MainViewModel)BindingContext).BeatIndexDrawable = new BeatIndexGraphics(_currentBeatNumber);
     }
 
     private void DisplayNoteToPlay()
     {
-        lastIsDisplayBeat = false;
-        GraphicsView noteToPlayGraphics = new GraphicsView
-        {
-            Drawable = new RhythmGraphics(NoteToPlay),
-            WidthRequest = 600,
-            HeightRequest = 100,
-            HorizontalOptions = LayoutOptions.Start,
-        };
-
-        RemoveGraphicElementFromView(typeof(RhythmGraphics));
-        layout.Children.Add(noteToPlayGraphics);
-    }
-
-    private void RemoveGraphicElementFromView(Type type)
-    {
-        List<GraphicsView> elementsToRemove = new List<GraphicsView>();
-
-        foreach (var child in layout.Children)
-        {
-            if (child is GraphicsView childGraphicsView && childGraphicsView.Drawable.GetType() == type)
-            {
-                elementsToRemove.Add(childGraphicsView);
-            }
-        }
-
-        foreach (var element in elementsToRemove)
-        {
-            layout.Remove(element);
-        }
+        ((MainViewModel)BindingContext).NoteToPlayDrawable = new RhythmGraphics(NoteToPlay);
     }
 }
-
