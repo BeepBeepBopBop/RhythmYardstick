@@ -8,8 +8,6 @@ public partial class MainPage : ContentPage
 {
     private Timer _timer;
 
-    private bool _isStarted;
-
     private int _elapsedRounds;
 
     private int _currentBeatNumber;
@@ -31,44 +29,40 @@ public partial class MainPage : ContentPage
         _currentBeatNumber = 0;
         int bpmMiliseconds = 60000 / Configuration.BPM;
         _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
-        _isStarted = true;
         Application.Current.Dispatcher.Dispatch(StartNewExercise);
     }
 
     private async void OnSettingsButtonClicked(object sender, EventArgs e)
     {
-        Application.Current.Dispatcher.Dispatch(StopExercise);
+        if (_timer != null)
+        {
+            Application.Current.Dispatcher.Dispatch(StopExercise);
+        }
+
         await Shell.Current.GoToAsync(nameof(SettingsPage));
     }
 
     private async void TimerCallback(object state)
     {
-        if (_isStarted)
+        //var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
+        //audioPlayer.Play();
+
+        _currentBeatNumber++;
+
+        if (_currentBeatNumber > Configuration.BeatCount)
         {
-            //var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
-            //audioPlayer.Play();
+            _currentBeatNumber = 1;
+            _elapsedRounds++;
+        }
 
-            _currentBeatNumber++;
-
-            if (_currentBeatNumber > Configuration.BeatCount)
-            {
-                _currentBeatNumber = 1;
-                _elapsedRounds++;
-            }
-
-            if (_elapsedRounds == Configuration.RoundCount)
-            {
-                _elapsedRounds = 0;
-                Application.Current.Dispatcher.Dispatch(StopExercise);
-            }
-            else
-            {
-                Application.Current.Dispatcher.Dispatch(DisplayBeat);
-            }
+        if (_elapsedRounds == Configuration.RoundCount)
+        {
+            _elapsedRounds = 0;
+            Application.Current.Dispatcher.Dispatch(StopExercise);
         }
         else
         {
-
+            Application.Current.Dispatcher.Dispatch(DisplayBeat);
         }
     }
 
@@ -81,14 +75,10 @@ public partial class MainPage : ContentPage
 
     private void StopExercise()
     {
-        if (_isStarted)
-        {
-            ((MainViewModel)BindingContext).NoteToPlayVisible = false;
-            ((MainViewModel)BindingContext).BeatIndexVisible = false;
-            _isStarted = false;
-            _timer.Dispose();
-            _timer = null;
-        }
+        ((MainViewModel)BindingContext).NoteToPlayVisible = false;
+        ((MainViewModel)BindingContext).BeatIndexVisible = false;
+        _timer.Dispose();
+        _timer = null;
     }
 
     private Tuple<int, int> GetNoteToPlay()
