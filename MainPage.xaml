@@ -13,14 +13,14 @@
         <drawable:BeatIndexGraphics x:Key="beatIndexDrawable" />
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="*, 50, 400, *" ColumnDefinitions="600,200">
-        <Button Grid.Row="0" Grid.Column="1"  Text="Settings" Clicked="OnSettingsButtonClicked"/>
+    <Grid RowDefinitions="*, 50, 400, *" ColumnDefinitions="20, 700,100, 100">
+        <Button Grid.Row="0" Grid.Column="2" Text="Start" Clicked="OnStartButtonClicked"/>
+        <Button Grid.Row="0" Grid.Column="3"  Text="Settings" Clicked="OnSettingsButtonClicked"/>
         
-        <GraphicsView Grid.Row="1"  IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}" VerticalOptions="Start" HeightRequest="50" WidthRequest="600" />
+        <GraphicsView Grid.Row="1"  Grid.Column="1" IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}" VerticalOptions="Start" HeightRequest="50" WidthRequest="600" />
 
-        <GraphicsView Grid.Row="2" Drawable="{StaticResource yardstickDrawable}"  />
-        <Button Grid.Row="2" Grid.Column="2" Text="Start" Clicked="OnStartButtonClicked"/>
+        <GraphicsView Grid.Row="2" Grid.Column="1" Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Fill" />
 
-        <GraphicsView Grid.Row="3" IsVisible="{Binding NoteToPlayVisible}" Drawable="{Binding NoteToPlayDrawable}" VerticalOptions="Center" HeightRequest="100" WidthRequest="600" />
+        <GraphicsView Grid.Row="3" Grid.Column="1" IsVisible="{Binding NoteToPlayVisible}" Drawable="{Binding NoteToPlayDrawable}" VerticalOptions="Center" HeightRequest="100" WidthRequest="600" />
     </Grid>
 </ContentPage>

@@ -20,7 +20,7 @@ namespace RhythmYardstick
 
         public const float YardstickThickness = 5f;
 
-        public const float HorizontalIndentation = CanvasWidth * 0.02f;
+        public const float HorizontalIndentation = YardstickThickness;
 
         public const float VerticalIndentation = CanvasHeight * 0.02f;
 
