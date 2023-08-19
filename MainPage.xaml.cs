@@ -29,7 +29,6 @@ public partial class MainPage : ContentPage
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
         _currentBeatNumber = 0;
-        ((MainViewModel)BindingContext).BeatIndexVisible = true;
         int bpmMiliseconds = 60000 / Configuration.BPM;
         _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
         _isStarted = true;
@@ -62,8 +61,14 @@ public partial class MainPage : ContentPage
                 _elapsedRounds = 0;
                 Application.Current.Dispatcher.Dispatch(StopExercise);
             }
+            else
+            {
+                Application.Current.Dispatcher.Dispatch(DisplayBeat);
+            }
+        }
+        else
+        {
 
-            Application.Current.Dispatcher.Dispatch(DisplayBeat);
         }
     }
 
@@ -81,6 +86,7 @@ public partial class MainPage : ContentPage
             ((MainViewModel)BindingContext).NoteToPlayVisible = false;
             ((MainViewModel)BindingContext).BeatIndexVisible = false;
             _isStarted = false;
+            _timer.Dispose();
             _timer = null;
         }
     }
@@ -98,7 +104,9 @@ public partial class MainPage : ContentPage
 
     private void DisplayBeat()
     {
-        ((MainViewModel)BindingContext).BeatIndexDrawable = new BeatIndexGraphics(_currentBeatNumber);
+        MainViewModel viewModel = (MainViewModel)BindingContext;
+        viewModel.BeatIndexDrawable = new BeatIndexGraphics(_currentBeatNumber);
+        viewModel.BeatIndexVisible |= true;
     }
 
     private void DisplayNoteToPlay()
