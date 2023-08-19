@@ -24,6 +24,12 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
+    public int GetYardstickAvailableWidth()
+    {
+        return (int)grid.ColumnDefinitions[1].Width.Value;
+    }
+
+
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
         if (_timer == null)

@@ -13,7 +13,7 @@
         <drawable:BeatIndexGraphics x:Key="beatIndexDrawable" />
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="*, 50, 400, *" ColumnDefinitions="20, 700,100, 100">
+    <Grid x:Name="grid" RowDefinitions="*, 50, 400, *" ColumnDefinitions="20, 700,100, 100">
         <Button Grid.Row="0" Grid.Column="2" Text="Start" Clicked="OnStartButtonClicked"/>
         <Button Grid.Row="0" Grid.Column="3"  Text="Settings" Clicked="OnSettingsButtonClicked"/>
         
