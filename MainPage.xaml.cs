@@ -58,11 +58,11 @@ public partial class MainPage : ContentPage
         if (_elapsedRounds == Configuration.RoundCount)
         {
             _elapsedRounds = 0;
-            Application.Current.Dispatcher.Dispatch(StopExercise);
+            StopExercise();
         }
         else
         {
-            Application.Current.Dispatcher.Dispatch(DisplayBeat);
+            DisplayBeat();
         }
     }
 
