@@ -12,9 +12,9 @@ public partial class MainPage : ContentPage
 
     private int _currentBeatNumber;
 
-    private Random _randomBeat = new Random();
+    private Random _randomBeat = new Random(DateTime.Now.Nanosecond);
 
-    private Random _randomSubdivision = new Random();
+    private Random _randomSubdivision = new Random(DateTime.Now.Millisecond);
 
     public Tuple<int, int> NoteToPlay { get; set; }
 
@@ -26,10 +26,13 @@ public partial class MainPage : ContentPage
 
     private void OnStartButtonClicked(object sender, EventArgs e)
     {
-        _currentBeatNumber = 0;
-        int bpmMiliseconds = 60000 / Configuration.BPM;
-        _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
-        Application.Current.Dispatcher.Dispatch(StartNewExercise);
+        if (_timer == null)
+        {
+            _currentBeatNumber = 0;
+            int bpmMiliseconds = 60000 / Configuration.BPM;
+            _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
+            Application.Current.Dispatcher.Dispatch(StartNewExercise);
+        }
     }
 
     private async void OnSettingsButtonClicked(object sender, EventArgs e)
@@ -69,8 +72,7 @@ public partial class MainPage : ContentPage
     private void StartNewExercise()
     {
         NoteToPlay = GetNoteToPlay();
-        ((MainViewModel)BindingContext).NoteToPlayDrawable = new RhythmGraphics(NoteToPlay);
-        ((MainViewModel)BindingContext).NoteToPlayVisible = true;
+        DisplayNoteToPlay();
     }
 
     private void StopExercise()
@@ -86,8 +88,8 @@ public partial class MainPage : ContentPage
         int beatNumber;
         int subDivisionNumber;
 
-        beatNumber = _randomBeat.Next(1, Configuration.BeatCount);
-        subDivisionNumber = _randomSubdivision.Next(0, Configuration.SubdivisionCount * Configuration.SubdivisionCount - 1);
+        beatNumber = _randomBeat.Next(1, Configuration.BeatCount + 1);
+        subDivisionNumber = _randomSubdivision.Next(1, Math.Min(1, Configuration.SubdivisionCount * Configuration.SubdivisionCount - 1));
 
         return new Tuple<int, int>(beatNumber, subDivisionNumber);
     }
@@ -101,6 +103,8 @@ public partial class MainPage : ContentPage
 
     private void DisplayNoteToPlay()
     {
-        ((MainViewModel)BindingContext).NoteToPlayDrawable = new RhythmGraphics(NoteToPlay);
+        MainViewModel viewModel = (MainViewModel)BindingContext;
+        viewModel.NoteToPlayDrawable = new RhythmGraphics(NoteToPlay);
+        viewModel.NoteToPlayVisible = true;
     }
 }
