@@ -13,13 +13,14 @@
         <drawable:BeatIndexGraphics x:Key="beatIndexDrawable" />
     </ContentPage.Resources>
 
-    <VerticalStackLayout x:Name="layout">
-        <Button HorizontalOptions="Start" Text="Settings" Clicked="OnSettingsButtonClicked"/>
-        <GraphicsView IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}" HorizontalOptions="Start" HeightRequest="50" WidthRequest="600" />
-        <HorizontalStackLayout>
-            <GraphicsView Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Start" HeightRequest="400" WidthRequest="650" />
-            <Button Text="Start" Clicked="OnStartButtonClicked" HorizontalOptions="End"/>
-        </HorizontalStackLayout>
-        <GraphicsView IsVisible="{Binding NoteToPlayVisible}" Drawable="{Binding NoteToPlayDrawable}" HorizontalOptions="Start" HeightRequest="100" WidthRequest="600" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="*, 50, 400, *" ColumnDefinitions="600,200">
+        <Button Grid.Row="0" Grid.Column="1"  Text="Settings" Clicked="OnSettingsButtonClicked"/>
+        
+        <GraphicsView Grid.Row="1"  IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}" VerticalOptions="Start" HeightRequest="50" WidthRequest="600" />
+
+        <GraphicsView Grid.Row="2" Drawable="{StaticResource yardstickDrawable}"  />
+        <Button Grid.Row="2" Grid.Column="2" Text="Start" Clicked="OnStartButtonClicked"/>
+
+        <GraphicsView Grid.Row="3" IsVisible="{Binding NoteToPlayVisible}" Drawable="{Binding NoteToPlayDrawable}" VerticalOptions="Center" HeightRequest="100" WidthRequest="600" />
+    </Grid>
 </ContentPage>
