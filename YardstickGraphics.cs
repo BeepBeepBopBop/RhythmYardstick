@@ -13,8 +13,6 @@ namespace RhythmYardstick
 
         public const float YardstickThickness = 5f;
 
-        public const float HorizontalIndentation = YardstickThickness;
-
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
         public static Color SubdivisionColor = Color.FromRgb(0, 0, 255);
@@ -36,7 +34,7 @@ namespace RhythmYardstick
 #endif
 
             float yardstickHeight = dirtyRect.Height - (YardstickTextSize * 1.5f) - YardstickThickness;
-            float yardstickWidth = dirtyRect.Width - HorizontalIndentation * 4;
+            float yardstickWidth = dirtyRect.Width - YardstickThickness * 4;
 
             float verticalIndentation = yardstickHeight * 0.02f;
 
@@ -54,13 +52,13 @@ namespace RhythmYardstick
 
             for (int beatNumber = 1; beatNumber <= Configuration.BeatCount; beatNumber++)
             {
-                float beatX = beatWidth * (beatNumber - 1) + HorizontalIndentation;
+                float beatX = beatWidth * (beatNumber - 1) + YardstickThickness;
 
                 DrawBeatMark(canvas, beatNumber.ToString(), beatX, top, bottom);
 
                 if (beatNumber == Configuration.BeatCount)
                 {
-                    canvas.DrawLine(HorizontalIndentation, bottom, HorizontalIndentation + yardstickWidth, bottom);
+                    canvas.DrawLine(YardstickThickness, bottom, YardstickThickness + yardstickWidth, bottom);
                     DrawBeatMark(canvas, "(1)", beatX + beatWidth, top, bottom);
                 }
 
@@ -111,11 +109,11 @@ namespace RhythmYardstick
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             float beatWidth = dirtyRect.Width / Configuration.BeatCount;
-            float beatX = (NoteToPlay.Item1 - 1) * beatWidth + YardstickGraphics.HorizontalIndentation;
+            float beatX = (NoteToPlay.Item1 - 1) * beatWidth + YardstickGraphics.YardstickThickness;
             int scale = (int)Math.Pow(2, Configuration.SubdivisionCount);
             float x = beatX + NoteToPlay.Item2 * (beatWidth / scale);
 
-            float arrowHeight = 80;
+            float arrowHeight = dirtyRect.Height;
             float arrowTipSize = arrowHeight / 3.5f;
             float y1 = RhythmThickness * 2;
             float y2 = y1 + arrowHeight;
@@ -151,7 +149,7 @@ namespace RhythmYardstick
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             float beatWidth = dirtyRect.Width / Configuration.BeatCount;
-            float beatX = (BeatNumber - 1) * beatWidth + YardstickGraphics.HorizontalIndentation;
+            float beatX = (BeatNumber - 1) * beatWidth + YardstickGraphics.YardstickThickness;
             float radius = RhythmGraphics.RhythmThickness * 3;
 
             canvas.StrokeColor = YardstickGraphics.NoteToPlayColor;
