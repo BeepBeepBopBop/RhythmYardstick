@@ -11,7 +11,7 @@ namespace RhythmYardstick
 
         public const float YardstickTextSize = 20;
 
-        public const float YardstickThickness = 5f;
+        public const float YardstickThickness = 2;
 
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
@@ -33,13 +33,20 @@ namespace RhythmYardstick
             canvas.DrawLine(100, 100, 100, 200);
 #endif
 
-            float yardstickHeight = dirtyRect.Height - (YardstickTextSize * 1.5f) - YardstickThickness;
-            float yardstickWidth = dirtyRect.Width - YardstickThickness * 4;
 
-            float verticalIndentation = yardstickHeight * 0.02f;
+            float s = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
+            float s2 = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
+            float ts = (s + s2) / 2;
+            float overlappingText = ts > YardstickThickness ? ts - YardstickThickness : 0;
 
-            float top = verticalIndentation + YardstickTextSize;
-            float bottom = top + yardstickHeight + YardstickThickness;
+            float spacingFromTop = YardstickTextSize + YardstickThickness;
+            float yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
+            float yardstickWidth = dirtyRect.Width - YardstickThickness - overlappingText;
+
+            float top = spacingFromTop;
+            float bottom = dirtyRect.Height - YardstickThickness / 2;
+            float left = YardstickThickness + overlappingText / 2;
+
 
             float beatmMarkHeight = yardstickHeight;
             float beatWidth = yardstickWidth / Configuration.BeatCount;
@@ -52,14 +59,14 @@ namespace RhythmYardstick
 
             for (int beatNumber = 1; beatNumber <= Configuration.BeatCount; beatNumber++)
             {
-                float beatX = beatWidth * (beatNumber - 1) + YardstickThickness;
+                float beatX = beatWidth * (beatNumber - 1) + left;
 
-                DrawBeatMark(canvas, beatNumber.ToString(), beatX, top, bottom);
+                DrawBeatMark(canvas, beatNumber.ToString(), beatX, top, bottom, yardstickWidth);
 
                 if (beatNumber == Configuration.BeatCount)
                 {
-                    canvas.DrawLine(YardstickThickness, bottom, YardstickThickness + yardstickWidth, bottom);
-                    DrawBeatMark(canvas, "(1)", beatX + beatWidth, top, bottom);
+                    canvas.DrawLine(left, bottom, left + yardstickWidth, bottom);
+                    DrawBeatMark(canvas, "(1)", beatX + beatWidth, top, bottom, yardstickWidth);
                 }
 
                 canvas.StrokeColor = SubdivisionColor;
@@ -80,11 +87,11 @@ namespace RhythmYardstick
         }
 
 
-        private static void DrawBeatMark(ICanvas canvas, string text, float beatX, float top, float bottom)
+        private static void DrawBeatMark(ICanvas canvas, string text, float beatX, float top, float bottom, float yardstickWidth)
         {
             var textSize = canvas.GetStringSize(text, YardstickFont, YardstickTextSize);
             canvas.StrokeColor = YardstickColor;
-            canvas.DrawString(text, beatX - (textSize.Width / 2) - (YardstickThickness / 2), YardstickTextSize, HorizontalAlignment.Left);
+            canvas.DrawString(text, beatX - (textSize.Width), textSize.Height, HorizontalAlignment.Left);
             canvas.DrawLine(beatX, top, beatX, bottom);
         }
 
