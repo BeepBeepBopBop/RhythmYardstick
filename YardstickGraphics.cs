@@ -9,7 +9,7 @@ namespace RhythmYardstick
     internal class YardstickGraphics : IDrawable
     {
 
-        public const float YardstickTextSize = 30;
+        public const float YardstickTextSize = 25;
 
         public const float YardstickThickness = 4;
 
