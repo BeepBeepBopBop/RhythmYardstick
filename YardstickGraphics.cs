@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Lights.Effects;
 
 namespace RhythmYardstick
 {
     internal class YardstickGraphics : IDrawable
     {
 
-        public const float YardstickTextSize = 25;
+        public const float YardstickTextSize = 40;
 
-        public const float YardstickThickness = 4;
+        public const float YardstickThickness = 20;
 
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
@@ -64,15 +65,39 @@ namespace RhythmYardstick
         private static void ComputeYardstickPositionAndDimensions(ICanvas canvas, RectF dirtyRect, out float left, out float top, out float bottom,
             out float yardstickWidth, out float yardstickHeight, out float beatWidth)
         {
+
             float firstBeatTextSize = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
             float lastBeatTextSize = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
-            float overlappingText = (firstBeatTextSize + lastBeatTextSize) / 2 > YardstickThickness ? (firstBeatTextSize + lastBeatTextSize) / 2 - YardstickThickness : 0;
             float spacingFromTop = YardstickTextSize + YardstickThickness;
 
-            yardstickWidth = dirtyRect.Width - YardstickThickness - overlappingText;
+            float rightIndent;
+
+            if (firstBeatTextSize > YardstickThickness)
+            {
+                left = firstBeatTextSize / 2;
+
+            }
+            else
+            {
+                left = YardstickThickness / 2;
+            }
+            if (lastBeatTextSize > YardstickThickness)
+            {
+                rightIndent = lastBeatTextSize / 2;
+            }
+            else
+            {
+                rightIndent = YardstickThickness / 2;
+            }
+
+            left = (float)Math.Ceiling(left);
+            rightIndent = (float)Math.Ceiling(rightIndent) ;
+
+            yardstickWidth = dirtyRect.Width - left - rightIndent;
             yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
+
             beatWidth = yardstickWidth / Configuration.BeatCount;
-            left = YardstickThickness / 2 + firstBeatTextSize > YardstickThickness ? firstBeatTextSize - YardstickThickness : 0;
+            left = (firstBeatTextSize > YardstickThickness ? firstBeatTextSize : YardstickThickness) / 2;
             top = spacingFromTop;
             bottom = dirtyRect.Height - YardstickThickness / 2;
         }
