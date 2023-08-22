@@ -66,13 +66,13 @@ namespace RhythmYardstick
         {
             float firstBeatTextSize = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
             float lastBeatTextSize = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
-            float overlappingText = firstBeatTextSize + lastBeatTextSize > YardstickThickness ? firstBeatTextSize + lastBeatTextSize - YardstickThickness : 0;
+            float overlappingText = (firstBeatTextSize + lastBeatTextSize) / 2 > YardstickThickness ? (firstBeatTextSize + lastBeatTextSize) / 2 - YardstickThickness : 0;
             float spacingFromTop = YardstickTextSize + YardstickThickness;
 
             yardstickWidth = dirtyRect.Width - YardstickThickness - overlappingText;
             yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
             beatWidth = yardstickWidth / Configuration.BeatCount;
-            left = YardstickThickness / 2 + firstBeatTextSize > YardstickThickness / 2 ? firstBeatTextSize - YardstickThickness : 0;
+            left = YardstickThickness / 2 + firstBeatTextSize > YardstickThickness ? firstBeatTextSize - YardstickThickness : 0;
             top = spacingFromTop;
             bottom = dirtyRect.Height - YardstickThickness / 2;
         }
