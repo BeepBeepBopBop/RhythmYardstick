@@ -9,9 +9,9 @@ namespace RhythmYardstick
     internal class YardstickGraphics : IDrawable
     {
 
-        public const float YardstickTextSize = 20;
+        public const float YardstickTextSize = 30;
 
-        public const float YardstickThickness = 2;
+        public const float YardstickThickness = 4;
 
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
@@ -21,35 +21,10 @@ namespace RhythmYardstick
 
         public static readonly Microsoft.Maui.Graphics.Font YardstickFont = Microsoft.Maui.Graphics.Font.DefaultBold;
 
-
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-#if BETA
-            canvas.StrokeSize = 10F;
-            //canvas.StrokeLineJoin = LineJoin.Round;
-            canvas.StrokeLineCap = LineCap.Square;
-            canvas.StrokeColor = YardstickColor;
-            canvas.DrawLine(100, 100, 200, 100);
-            canvas.DrawLine(100, 100, 100, 200);
-#endif
-
-
-            float s = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
-            float s2 = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
-            float ts = (s + s2) / 2;
-            float overlappingText = ts > YardstickThickness ? ts - YardstickThickness : 0;
-
-            float spacingFromTop = YardstickTextSize + YardstickThickness;
-            float yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
-            float yardstickWidth = dirtyRect.Width - YardstickThickness - overlappingText;
-
-            float top = spacingFromTop;
-            float bottom = dirtyRect.Height - YardstickThickness / 2;
-            float left = YardstickThickness + overlappingText / 2;
-
-
-            float beatmMarkHeight = yardstickHeight;
-            float beatWidth = yardstickWidth / Configuration.BeatCount;
+            ComputeYardstickPositionAndDimensions(canvas, dirtyRect, out float left, out float top, out float bottom,
+                out float yardstickWidth, out float yardstickHeight, out float beatWidth);
 
             canvas.StrokeLineCap = LineCap.Square;
             canvas.StrokeSize = YardstickThickness;
@@ -80,18 +55,34 @@ namespace RhythmYardstick
                         float x = beatX + subdivisionMarkNumber * (beatWidth / scale);
                         float y = bottom - YardstickThickness;
 
-                        canvas.DrawLine(x, y, x, y - beatmMarkHeight / scale);
+                        canvas.DrawLine(x, y, x, y - yardstickHeight / scale);
                     }
                 }
             }
         }
 
+        private static void ComputeYardstickPositionAndDimensions(ICanvas canvas, RectF dirtyRect, out float left, out float top, out float bottom,
+            out float yardstickWidth, out float yardstickHeight, out float beatWidth)
+        {
+            float firstBeatTextSize = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
+            float lastBeatTextSize = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
+            float overlappingText = firstBeatTextSize + lastBeatTextSize > YardstickThickness ? firstBeatTextSize + lastBeatTextSize - YardstickThickness : 0;
+            float spacingFromTop = YardstickTextSize + YardstickThickness;
+
+            yardstickWidth = dirtyRect.Width - YardstickThickness - overlappingText;
+            yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
+            beatWidth = yardstickWidth / Configuration.BeatCount;
+            left = YardstickThickness / 2 + firstBeatTextSize > YardstickThickness / 2 ? firstBeatTextSize - YardstickThickness : 0;
+            top = spacingFromTop;
+            bottom = dirtyRect.Height - YardstickThickness / 2;
+        }
 
         private static void DrawBeatMark(ICanvas canvas, string text, float beatX, float top, float bottom, float yardstickWidth)
         {
             var textSize = canvas.GetStringSize(text, YardstickFont, YardstickTextSize);
+
             canvas.StrokeColor = YardstickColor;
-            canvas.DrawString(text, beatX - (textSize.Width), textSize.Height, HorizontalAlignment.Left);
+            canvas.DrawString(text, beatX, textSize.Height, HorizontalAlignment.Center);
             canvas.DrawLine(beatX, top, beatX, bottom);
         }
 
