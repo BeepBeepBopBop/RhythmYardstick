@@ -63,7 +63,7 @@ namespace RhythmYardstick
         }
 
         private static void ComputeYardstickPositionAndDimensions(ICanvas canvas, RectF dirtyRect, out float left, out float top, out float bottom,
-            out float yardstickWidth, out float yardstickHeight, out float beatWidth)
+                    out float yardstickWidth, out float yardstickHeight, out float beatWidth)
         {
 
             float firstBeatTextSize = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
@@ -91,13 +91,12 @@ namespace RhythmYardstick
             }
 
             left = (float)Math.Ceiling(left);
-            rightIndent = (float)Math.Ceiling(rightIndent) ;
+            rightIndent = (float)Math.Ceiling(rightIndent);
 
             yardstickWidth = dirtyRect.Width - left - rightIndent;
             yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
 
             beatWidth = yardstickWidth / Configuration.BeatCount;
-            left = (firstBeatTextSize > YardstickThickness ? firstBeatTextSize : YardstickThickness) / 2;
             top = spacingFromTop;
             bottom = dirtyRect.Height - YardstickThickness / 2;
         }
