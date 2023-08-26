@@ -14,7 +14,9 @@ namespace RhythmYardstick
 
         private static int DefaultBPM = 60;
 
-        private static int DefaultRoundCount = 1;
+        private static int DefaultRoundCount = 2;
+
+        private static int DefaultExerciseCount = 2;
 
         public static Tuple<int, int> NoteToPlay;
 
@@ -63,6 +65,18 @@ namespace RhythmYardstick
             set
             {
                 Preferences.Set("RoundCount", value);
+            }
+        }
+
+        public static int ExerciseCount
+        {
+            get
+            {
+                return Preferences.Get("ExerciseCount", DefaultExerciseCount);
+            }
+            set
+            {
+                Preferences.Set("ExerciseCount", value);
             }
         }
     }

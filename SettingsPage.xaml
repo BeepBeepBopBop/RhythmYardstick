@@ -17,6 +17,11 @@
             <Label Text="{Binding BeatCount, StringFormat='Number of beats: {0}'}" />
             <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount,Mode=TwoWay}" />
 
+            <Label Text="{Binding RoundCount, StringFormat='Number of rounds: {0}'}" />
+            <Slider Minimum="1" Maximum="10" Value="{Binding RoundCount,Mode=TwoWay}" />
+
+            <Label Text="{Binding ExerciseCount, StringFormat='Number of exercises: {0}'}" />
+            <Slider Minimum="1" Maximum="10" Value="{Binding ExerciseCount,Mode=TwoWay}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

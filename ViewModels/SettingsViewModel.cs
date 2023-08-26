@@ -46,5 +46,25 @@ namespace RhythmYardstick
                 OnPropertyChanged();
             }
         }
+
+        public int ExerciseCount
+        {
+            get => Configuration.ExerciseCount;
+            set
+            {
+                Configuration.ExerciseCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int RoundCount
+        {
+            get => Configuration.RoundCount;
+            set
+            {
+                Configuration.RoundCount = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

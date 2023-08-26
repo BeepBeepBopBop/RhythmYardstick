@@ -10,6 +10,8 @@ public partial class MainPage : ContentPage
 
     private int _elapsedRounds;
 
+    private int _elapsedExercises;
+
     private int _currentBeatNumber;
 
     private Random _randomBeat = new Random(DateTime.Now.Nanosecond);
@@ -67,12 +69,21 @@ public partial class MainPage : ContentPage
         if (_elapsedRounds == Configuration.RoundCount)
         {
             _elapsedRounds = 0;
-            StopExercise();
+            _elapsedExercises++;
+
+            if (_elapsedExercises == Configuration.ExerciseCount)
+            {
+                _elapsedExercises = 0;
+                StopExercise();
+                return;
+            }
+            else
+            {
+                StartNewExercise();
+            }
         }
-        else
-        {
-            DisplayBeat();
-        }
+
+        DisplayBeat();
     }
 
     private void StartNewExercise()

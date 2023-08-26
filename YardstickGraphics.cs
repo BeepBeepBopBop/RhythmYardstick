@@ -8,10 +8,9 @@ namespace RhythmYardstick
 {
     internal class YardstickGraphics : IDrawable
     {
-
         public const float YardstickTextSize = 40;
 
-        public const float YardstickThickness = 20;
+        public const float YardstickThickness = 10;
 
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
@@ -61,43 +60,43 @@ namespace RhythmYardstick
             }
         }
 
-        private static void ComputeYardstickPositionAndDimensions(ICanvas canvas, RectF dirtyRect, out float left, out float top, out float bottom,
+        public static void ComputeYardstickPositionAndDimensions(ICanvas canvas, RectF dirtyRect, out float left, out float top, out float bottom,
                     out float yardstickWidth, out float yardstickHeight, out float beatWidth)
         {
-
+            float thickestDrawingElement = Math.Max(BeatIndexGraphics.BeatIndexThickness * 3 * 2 + BeatIndexGraphics.BeatIndexThickness, YardstickThickness);
             float firstBeatTextSize = canvas.GetStringSize("1", YardstickFont, YardstickTextSize).Width;
             float lastBeatTextSize = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize).Width;
-            float spacingFromTop = YardstickTextSize + YardstickThickness;
+            float spacingFromTop = YardstickTextSize + thickestDrawingElement;
 
             float rightIndent;
 
-            if (firstBeatTextSize > YardstickThickness)
+            if (firstBeatTextSize > thickestDrawingElement)
             {
                 left = firstBeatTextSize / 2;
 
             }
             else
             {
-                left = YardstickThickness / 2;
+                left = thickestDrawingElement / 2;
             }
-            if (lastBeatTextSize > YardstickThickness)
+            if (lastBeatTextSize > thickestDrawingElement)
             {
                 rightIndent = lastBeatTextSize / 2;
             }
             else
             {
-                rightIndent = YardstickThickness / 2;
+                rightIndent = thickestDrawingElement / 2;
             }
 
             left = (float)Math.Ceiling(left);
             rightIndent = (float)Math.Ceiling(rightIndent);
 
             yardstickWidth = dirtyRect.Width - left - rightIndent;
-            yardstickHeight = dirtyRect.Height - spacingFromTop - YardstickThickness;
+            yardstickHeight = dirtyRect.Height - spacingFromTop - thickestDrawingElement;
 
             beatWidth = yardstickWidth / Configuration.BeatCount;
             top = spacingFromTop;
-            bottom = dirtyRect.Height - YardstickThickness / 2;
+            bottom = dirtyRect.Height - thickestDrawingElement / 2;
         }
 
         private static void DrawBeatMark(ICanvas canvas, string text, float beatX, float top, float bottom, float yardstickWidth)
@@ -129,8 +128,10 @@ namespace RhythmYardstick
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float beatWidth = dirtyRect.Width / Configuration.BeatCount;
-            float beatX = (NoteToPlay.Item1 - 1) * beatWidth + YardstickGraphics.YardstickThickness;
+            YardstickGraphics.ComputeYardstickPositionAndDimensions(canvas, dirtyRect, out float left, out float top, out float bottom,
+     out float yardstickWidth, out float yardstickHeight, out float beatWidth);
+
+            float beatX = (NoteToPlay.Item1 - 1) * beatWidth + left;
             int scale = (int)Math.Pow(2, Configuration.SubdivisionCount);
             float x = beatX + NoteToPlay.Item2 * (beatWidth / scale);
 
@@ -155,6 +156,8 @@ namespace RhythmYardstick
 
     public class BeatIndexGraphics : IDrawable
     {
+        public const float BeatIndexThickness = 3;
+
         public int BeatNumber { get; }
 
         public BeatIndexGraphics(int beatNumber)
@@ -169,14 +172,16 @@ namespace RhythmYardstick
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float beatWidth = dirtyRect.Width / Configuration.BeatCount;
-            float beatX = (BeatNumber - 1) * beatWidth + YardstickGraphics.YardstickThickness;
-            float radius = RhythmGraphics.RhythmThickness * 3;
+            YardstickGraphics.ComputeYardstickPositionAndDimensions(canvas, dirtyRect, out float left, out float top, out float bottom,
+                 out float yardstickWidth, out float yardstickHeight, out float beatWidth);
+            float beatX = left + (BeatNumber - 1) * beatWidth;
+            float radius = BeatIndexThickness * 3;
+            float offset = 0;
 
             canvas.StrokeColor = YardstickGraphics.NoteToPlayColor;
-            canvas.StrokeSize = RhythmGraphics.RhythmThickness;
+            canvas.StrokeSize = BeatIndexThickness;
 
-            canvas.DrawCircle(beatX, radius * 2, radius);
+            canvas.DrawCircle(beatX + offset, radius * 2, radius);
         }
     }
 }
