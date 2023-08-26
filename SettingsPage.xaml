@@ -12,7 +12,7 @@
             <Slider  x:Name="sliderBPM"  Minimum="30" Maximum="200" Value="{Binding BPM, Mode=TwoWay}" Margin="20"/>
 
             <Label Text="{Binding SubdivisionCount, StringFormat='Subdivisions: {0}'}" />
-            <Slider  Minimum ="1" Maximum="4" Value="{Binding SubdivisionCount,Mode=TwoWay}"  />
+            <Slider  Minimum ="1" Maximum="5" Value="{Binding SubdivisionCount,Mode=TwoWay}"  />
 
             <Label Text="{Binding BeatCount, StringFormat='Number of beats: {0}'}" />
             <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount,Mode=TwoWay}" />

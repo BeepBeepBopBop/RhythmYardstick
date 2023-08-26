@@ -106,7 +106,7 @@ public partial class MainPage : ContentPage
         int subDivisionNumber;
 
         beatNumber = _randomBeat.Next(1, Configuration.BeatCount + 1);
-        subDivisionNumber = _randomSubdivision.Next(1, Math.Min(1, Configuration.SubdivisionCount * Configuration.SubdivisionCount - 1));
+        subDivisionNumber = _randomSubdivision.Next(1, (int)Math.Pow(2, Configuration.SubdivisionCount));
 
         return new Tuple<int, int>(beatNumber, subDivisionNumber);
     }

@@ -10,7 +10,7 @@ namespace RhythmYardstick
     {
         public const float YardstickTextSize = 40;
 
-        public const float YardstickThickness = 10;
+        public const float YardstickThickness = 3;
 
         public static Color YardstickColor = Color.FromRgb(255, 0, 0);
 
