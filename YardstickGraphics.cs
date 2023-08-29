@@ -101,10 +101,10 @@ namespace RhythmYardstick
 
         private static void DrawBeatMark(ICanvas canvas, string text, float beatX, float top, float bottom, float yardstickWidth)
         {
-            var textSize = canvas.GetStringSize(text, YardstickFont, YardstickTextSize);
+            var largestStringSize = canvas.GetStringSize("(1)", YardstickFont, YardstickTextSize);
 
             canvas.StrokeColor = YardstickColor;
-            canvas.DrawString(text, beatX, textSize.Height, HorizontalAlignment.Center);
+            canvas.DrawString(text, beatX, largestStringSize.Height, HorizontalAlignment.Center);
             canvas.DrawLine(beatX, top, beatX, bottom);
         }
 
