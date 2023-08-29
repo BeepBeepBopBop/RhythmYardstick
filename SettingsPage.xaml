@@ -5,22 +5,22 @@
              x:Class="RhythmYardstick.SettingsPage"
              x:DataType="local:SettingsViewModel">
 
-    <ScrollView Grid.Row="1">
-        <VerticalStackLayout Spacing="0">
+    <ScrollView>
+        <VerticalStackLayout Padding="20, 20">
 
             <Label Text="{Binding BPM, StringFormat='BPM: {0}'}" />
-            <Slider  x:Name="sliderBPM"  Minimum="30" Maximum="200" Value="{Binding BPM, Mode=TwoWay}" Margin="20"/>
+            <Slider x:Name="sliderBPM"  Minimum="30" Maximum="200" Value="{Binding BPM, Mode=TwoWay}"/>
 
-            <Label Text="{Binding SubdivisionCount, StringFormat='Subdivisions: {0}'}" />
+            <Label Text="{Binding SubdivisionCount, StringFormat='Subdivisions: {0}'}" Margin="0, 10, 0, 0"/>
             <Slider  Minimum ="1" Maximum="5" Value="{Binding SubdivisionCount,Mode=TwoWay}"  />
 
-            <Label Text="{Binding BeatCount, StringFormat='Number of beats: {0}'}" />
+            <Label Text="{Binding BeatCount, StringFormat='Number of beats: {0}'}" Margin="0, 10, 0, 0" />
             <Slider Minimum="2" Maximum="6" Value="{Binding BeatCount,Mode=TwoWay}" />
 
-            <Label Text="{Binding RoundCount, StringFormat='Number of rounds: {0}'}" />
+            <Label Text="{Binding RoundCount, StringFormat='Number of rounds: {0}'}" Margin="0, 10, 0, 0"/>
             <Slider Minimum="1" Maximum="10" Value="{Binding RoundCount,Mode=TwoWay}" />
 
-            <Label Text="{Binding ExerciseCount, StringFormat='Number of exercises: {0}'}" />
+            <Label Text="{Binding ExerciseCount, StringFormat='Number of exercises: {0}'}" Margin="0, 10, 0, 0"/>
             <Slider Minimum="1" Maximum="10" Value="{Binding ExerciseCount,Mode=TwoWay}" />
         </VerticalStackLayout>
     </ScrollView>
