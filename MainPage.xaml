@@ -18,11 +18,11 @@
     </ContentPage.Resources>
 
     <Grid x:Name="grid" RowDefinitions="*, 4*, 3*, 15*, 5*, *" ColumnDefinitions="*, 30*,5*, 5*, *">
-        <Button Grid.Row="1" Grid.Column="2" Text="{Binding IsStarted, Converter={StaticResource BoolToObjectConverter}}" Clicked="OnStartButtonClicked"/>
-        <Button Grid.Row="1" Grid.Column="3"  Text="Settings" Clicked="OnSettingsButtonClicked"/>
+        <Button Command="{Binding StartButtonClickedCommand}" Grid.Row="1" Grid.Column="2" Text="{Binding IsStarted, Converter={StaticResource BoolToObjectConverter}}" />
+        <Button Command="{Binding SettingsButtonClickedCommand}" Grid.Row="1" Grid.Column="3"  Text="Settings" />
+
         <Label Grid.Row="2" Grid.Column="2" Text="{Binding Debug}"/>
         <GraphicsView Grid.Row="2"  Grid.Column="1" IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}"  />
-
         <GraphicsView x:Name="yardstick" Grid.Row="3" Grid.Column="1" Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Fill" />
 
         <GraphicsView Grid.Row="4" Grid.Column="1" IsVisible="{Binding NoteToPlayVisible}" Drawable="{Binding NoteToPlayDrawable}"/>
