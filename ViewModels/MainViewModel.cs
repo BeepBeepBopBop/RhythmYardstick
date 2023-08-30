@@ -17,6 +17,33 @@ namespace RhythmYardstick
 
         private bool _noteToPlayVisible;
 
+        private bool _isStarted;
+
+
+#if DEBUG
+        private string _debug;
+
+        public string Debug
+        {
+            get => _debug;
+            set
+            {
+                _debug = value;
+                OnPropertyChanged();
+            }
+        }
+#endif
+
+        public bool IsStarted
+        {
+            get => _isStarted;
+            set
+            {
+                _isStarted = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IDrawable BeatIndexDrawable
         {
             get

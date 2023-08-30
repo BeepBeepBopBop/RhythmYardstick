@@ -1,11 +1,14 @@
 ﻿using Microsoft.Maui.Platform;
 using Plugin.Maui.Audio;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace RhythmYardstick;
 
 public partial class MainPage : ContentPage
 {
+    private Stopwatch _stopwatch = new Stopwatch();
+
     private Timer _timer;
 
     private int _elapsedRounds;
@@ -36,10 +39,19 @@ public partial class MainPage : ContentPage
     {
         if (_timer == null)
         {
+            ((MainViewModel)BindingContext).IsStarted = true;
+#if DEBUG
+            _stopwatch.Start();
+#endif
             _currentBeatNumber = 0;
             int bpmMiliseconds = 60000 / Configuration.BPM;
             _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
             Application.Current.Dispatcher.Dispatch(StartNewExercise);
+        }
+        else
+        {
+            ((MainViewModel)BindingContext).IsStarted = false;
+            StopExercise();
         }
     }
 
@@ -55,8 +67,14 @@ public partial class MainPage : ContentPage
 
     private async void TimerCallback(object state)
     {
-        //var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
-        //audioPlayer.Play();
+#if DEBUG
+        _stopwatch.Stop();
+        ((MainViewModel)BindingContext).Debug = _stopwatch.ElapsedMilliseconds.ToString();
+        _stopwatch.Restart();
+#endif
+
+        var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
+        audioPlayer.Play();
 
         _currentBeatNumber++;
 
