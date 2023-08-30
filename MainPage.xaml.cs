@@ -7,8 +7,6 @@ namespace RhythmYardstick;
 
 public partial class MainPage : ContentPage
 {
-    private Timer _timer;
-
     public MainPage()
     {
         BindingContext = new MainViewModel();
