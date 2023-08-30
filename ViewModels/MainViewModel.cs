@@ -9,13 +9,17 @@ namespace RhythmYardstick
         private Stopwatch _stopwatch = new Stopwatch();
 
         private int _elapsedRounds;
-
         private int _elapsedExercises;
-
         private int _currentBeatNumber;
 
-        private Random _randomBeat = new Random(DateTime.Now.Nanosecond);
+        [ObservableProperty]
+        private string _statusLabelText;
+        [ObservableProperty]
+        private int _warmupBeatsRemaining;
+        [ObservableProperty]
+        private bool _warmupCountdownStarted;
 
+        private Random _randomBeat = new Random(DateTime.Now.Nanosecond);
         private Random _randomSubdivision = new Random(DateTime.Now.Millisecond);
 
         public Tuple<int, int> NoteToPlay { get; set; }
@@ -28,6 +32,7 @@ namespace RhythmYardstick
         private bool _isStarted;
 
 
+        //public bool WarmupCountdown2 => _warmupBeatsRemaining > 1;
 #if DEBUG
         private string _debug;
 
@@ -141,6 +146,26 @@ namespace RhythmYardstick
             var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("drumsticks.mp3"));
             audioPlayer.Play();
 
+            if (WarmupBeatsRemaining > 0)
+            {
+                if (WarmupBeatsRemaining == Configuration.BeatCount + 1)
+                {
+                    WarmupCountdownStarted = true;
+                }
+
+                WarmupBeatsRemaining--;
+
+                if (WarmupBeatsRemaining > 0)
+                {
+                    return;
+                }
+                else
+                {
+                    StatusLabelText = string.Empty;
+                    WarmupCountdownStarted = false;
+                }
+            }
+
             _currentBeatNumber++;
 
             if (_currentBeatNumber > Configuration.BeatCount)
@@ -173,12 +198,16 @@ namespace RhythmYardstick
         {
             NoteToPlay = GetNoteToPlay();
             DisplayNoteToPlay();
+            WarmupBeatsRemaining = Configuration.BeatCount + 1;
+            StatusLabelText = "Get ready...";
         }
 
         private void StopExercise()
         {
             NoteToPlayVisible = false;
             BeatIndexVisible = false;
+            WarmupCountdownStarted = false;
+            StatusLabelText = string.Empty;
             _timer.Dispose();
             _timer = null;
         }
