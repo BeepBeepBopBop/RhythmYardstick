@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 namespace RhythmYardstick
 {
     public partial class MainViewModel : ObservableObject
@@ -115,12 +117,11 @@ namespace RhythmYardstick
                 _currentBeatNumber = 0;
                 int bpmMiliseconds = 60000 / Configuration.BPM;
                 _timer = new Timer(TimerCallback, null, bpmMiliseconds, bpmMiliseconds);
-                Application.Current.Dispatcher.Dispatch(StartNewExercise);
+                Application.Current.Dispatcher.Dispatch(StartSession);
             }
             else
             {
-                IsStarted = false;
-                StopExercise();
+                StopSession();
             }
         }
 
@@ -129,7 +130,7 @@ namespace RhythmYardstick
         {
             if (_timer != null)
             {
-                Application.Current.Dispatcher.Dispatch(StopExercise);
+                Application.Current.Dispatcher.Dispatch(StopSession);
             }
 
             await Shell.Current.GoToAsync(nameof(SettingsPage));
@@ -182,7 +183,7 @@ namespace RhythmYardstick
                 if (_elapsedExercises == Configuration.ExerciseCount)
                 {
                     _elapsedExercises = 0;
-                    StopExercise();
+                    StopSession();
                     return;
                 }
                 else
@@ -194,16 +195,22 @@ namespace RhythmYardstick
             DisplayBeat();
         }
 
+        private void StartSession()
+        {
+            WarmupBeatsRemaining = Configuration.BeatCount + 1;
+            StatusLabelText = "Get ready...";
+            StartNewExercise();
+        }
+
         private void StartNewExercise()
         {
             NoteToPlay = GetNoteToPlay();
             DisplayNoteToPlay();
-            WarmupBeatsRemaining = Configuration.BeatCount + 1;
-            StatusLabelText = "Get ready...";
         }
 
-        private void StopExercise()
+        private void StopSession()
         {
+            IsStarted = false;
             NoteToPlayVisible = false;
             BeatIndexVisible = false;
             WarmupCountdownStarted = false;
