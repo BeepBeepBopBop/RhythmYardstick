@@ -24,7 +24,6 @@
         <Label Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center"  VerticalTextAlignment="End" Text="{Binding StatusLabelText}" FontSize="Subtitle"/>
         <Label IsVisible="{Binding WarmupCountdownStarted}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Start" Text="{Binding WarmupBeatsRemaining}" FontSize="Subtitle"/>
 
-        <!--<Label Grid.Row="2" Grid.Column="2" Text="{Binding Debug}"/>-->
         <GraphicsView Grid.Row="2"  Grid.Column="1" IsVisible="{Binding BeatIndexVisible}" Drawable="{Binding BeatIndexDrawable}"  />
         <GraphicsView x:Name="yardstick" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Drawable="{StaticResource yardstickDrawable}" HorizontalOptions="Fill" />
 

@@ -33,22 +33,6 @@ namespace RhythmYardstick
         private bool _noteToPlayVisible;
         private bool _isStarted;
 
-
-        //public bool WarmupCountdown2 => _warmupBeatsRemaining > 1;
-#if DEBUG
-        private string _debug;
-
-        public string Debug
-        {
-            get => _debug;
-            set
-            {
-                _debug = value;
-                OnPropertyChanged();
-            }
-        }
-#endif
-
         public bool IsStarted
         {
             get => _isStarted;
@@ -111,7 +95,7 @@ namespace RhythmYardstick
             if (_timer == null)
             {
                 IsStarted = true;
-#if DEBUG
+#if DEBUG_ELAPSED
                 _stopwatch.Start();
 #endif
                 _currentBeatNumber = 0;
@@ -138,9 +122,9 @@ namespace RhythmYardstick
 
         private async void TimerCallback(object state)
         {
-#if DEBUG
+#if DEBUG_ELAPSED
             _stopwatch.Stop();
-            Debug = _stopwatch.ElapsedMilliseconds.ToString();
+            StatusLabelText = _stopwatch.ElapsedMilliseconds.ToString();
             _stopwatch.Restart();
 #endif
 
