@@ -8,8 +8,11 @@ namespace RhythmYardstick
 {
     public partial class MainViewModel : ObservableObject
     {
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
+        private readonly Random _randomBeat = new Random(DateTime.Now.Nanosecond);
+        private readonly Random _randomSubdivision = new Random(DateTime.Now.Millisecond);
 
+        private Timer _timer;
         private int _elapsedRounds;
         private int _elapsedExercises;
         private int _currentBeatNumber;
@@ -20,74 +23,20 @@ namespace RhythmYardstick
         private int _warmupBeatsRemaining;
         [ObservableProperty]
         private bool _warmupCountdownStarted;
-
-        private Random _randomBeat = new Random(DateTime.Now.Nanosecond);
-        private Random _randomSubdivision = new Random(DateTime.Now.Millisecond);
+        [ObservableProperty]
+        private bool _isStarted;
+        [ObservableProperty]
+        private IDrawable _beatIndexDrawable;
+        [ObservableProperty]
+        private bool _beatIndexVisible;
+        [ObservableProperty]
+        private IDrawable _noteToPlayDrawable;
+        [ObservableProperty]
+        private bool _noteToPlayVisible;
 
         public Tuple<int, int> NoteToPlay { get; set; }
 
-        private Timer _timer;
-        private IDrawable _beatIndexDrawable;
-        private bool _beatIndexVisible;
-        private IDrawable _noteToPlayDrawable;
-        private bool _noteToPlayVisible;
-        private bool _isStarted;
-
-        public bool IsStarted
-        {
-            get => _isStarted;
-            set
-            {
-                _isStarted = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IDrawable BeatIndexDrawable
-        {
-            get
-            {
-                return _beatIndexDrawable;
-            }
-            set
-            {
-                _beatIndexDrawable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool BeatIndexVisible
-        {
-            get => _beatIndexVisible;
-            set
-            {
-                _beatIndexVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IDrawable NoteToPlayDrawable
-        {
-            get
-            {
-                return _noteToPlayDrawable;
-            }
-            set
-            {
-                _noteToPlayDrawable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool NoteToPlayVisible
-        {
-            get => _noteToPlayVisible;
-            set
-            {
-                _noteToPlayVisible = value;
-                OnPropertyChanged();
-            }
-        }
+        
 
         [RelayCommand]
         public void OnStartButtonClicked()
